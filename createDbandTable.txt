@@ -1,0 +1,76 @@
+CREATE DATABASE wow_macetas;
+CREATE TABLE CLIENTE (
+    idCliente int PRIMARY KEY,
+    nombre varchar(255),
+    dirCalle varchar(255),
+    dirNumero int,
+    sexo char(1),
+    fechaNacimiento date,
+    correo varchar(255),
+    telefono varchar(255)
+   
+);
+CREATE TABLE PRODUCTO (
+    idProducto int PRIMARY KEY,
+    idCategoria int,
+    idLote int,
+    stock int,
+    descripcion varchar (255),
+    precio float(20,2),
+    imagen varchar(255),
+    nombre varchar(255),
+    FOREIGN KEY(idCategoria) REFERENCES CATEGORIA (idCategoria),
+    FOREIGN KEY(idLote) REFERENCES LOTE (idLote)
+);
+ALTER TABLE producto ADD FOREIGN KEY (idCategoria) REFERENCES categoria(idCategoria);
+CREATE TABLE CATEGORIA (
+    idCategoria int PRIMARY KEY,
+    categoria varchar(255),
+    descripcion varchar(255)
+    
+);
+
+CREATE TABLE VENTA (
+    idCliente int,
+    idVenta int PRIMARY KEY,
+    codigo varchar(255),
+    fechaVenta date,
+    descripcion varchar (255),
+    montoFinal float(20,2),
+    FOREIGN KEY(idCliente) REFERENCES CLIENTE (idCliente)
+);
+CREATE TABLE VENTA_DETALLE (
+    idLote int,
+    idVenta int,
+    idProducto int,
+    idDetalle int PRIMARY KEY,
+    cantidad int,
+    precio float(20,2),
+    FOREIGN KEY(idVenta) REFERENCES VENTA (idVenta),
+    FOREIGN KEY(idLote) REFERENCES LOTE (idLote),
+    FOREIGN KEY(idProducto) REFERENCES PRODUCTO (idProducto)
+   
+);
+CREATE TABLE LOTE (
+    idLote int PRIMARY KEY,
+    fechaIngreso date      
+);
+CREATE TABLE COMPRA_INSUMOS (
+    idInsumos int PRIMARY KEY,
+    idLote int,
+    proveedor varchar(255),
+    detalle varchar (255),
+    montoFinal float(20,2),
+    FOREIGN KEY(idLote) REFERENCES LOTE (idLote)
+);
+CREATE TABLE LOTE_DETALLE (
+    idProducto int,
+    idLoteDetalle int PRIMARY KEY,
+    operario varchar (255),
+    tiempoEspera varchar (255),
+    cantidad int ,
+    costo float(20,2),
+    cantMoldes int,
+    FOREIGN KEY(idProducto) REFERENCES PRODUCTO (idProducto)
+   
+);

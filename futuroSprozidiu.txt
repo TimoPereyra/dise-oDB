@@ -1,0 +1,18 @@
+BEGIN
+declare @totalProductos int;
+declare @totalCompras float;
+declare @ganancias float; xxxxxxxxxxxxxxxxxxxxxxxxx
+declare @productosPocoStock int;
+declare @ventasHoy float;
+
+
+SET totalProductos = (SELECT COUNT(*) FROM productos p);
+
+SET totalCompras = (SELECT SUM(c.montoFinal) FROM compras c);
+
+SET productosPocoStock = (select COUNT(1) from productos p where p.stock_producto <= p.minimo_stock_producto);
+
+SET ventasHoy = (SELECT SUM(c.montoFinal) FROM compras c where c.fecha_venta = curdate());
+
+
+END

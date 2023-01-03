@@ -1,0 +1,92 @@
+DROP TABLE IF EXISTS cliente;
+CREATE TABLE CLIENTE (
+    idCliente int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nombre varchar(55) NOT NULL,
+    apellido varchar(55) NOT NULL,
+    dirCalle varchar(55) NOT NULL,
+    dirNumero int NOT NULL,
+    sexo char(1) NOT NULL,
+    fechaNacimiento date NOT NULL,
+    correo varchar(55) NOT NULL,
+    telefono varchar(55) NOT NULL
+   
+);
+DROP TABLE IF EXISTS producto;
+CREATE TABLE PRODUCTO (
+    idProducto int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    idCategoria int NOT NULL,
+    idLote int NOT NULL,
+    stock int  NOT NULL,
+    descripcion varchar (255) NOT NULL,
+    precio float(20,2) NOT NULL,
+    imagen varchar(255) NOT NULL,
+    nombre varchar(150) NOT NULL    
+);
+DROP TABLE IF EXISTS categoria;
+CREATE TABLE CATEGORIA (
+    idCategoria int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    categoria varchar(255) NOT NULL,
+    descripcion varchar(255) NOT NULL
+    
+);
+DROP TABLE IF EXISTS lote;
+CREATE TABLE LOTE (
+    idLote int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    fechaIngreso date NOT NULL      
+);
+ALTER TABLE producto
+ADD FOREIGN KEY (idCategoria) REFERENCES categoria(idCategoria),
+ADD FOREIGN KEY (idLote) REFERENCES lote(idLote)
+;
+DROP TABLE IF EXISTS venta;
+CREATE TABLE VENTA (
+    idCliente int,
+    idVenta int PRIMARY KEY,
+    codigo varchar(255),
+    fechaVenta date,
+    descripcion varchar (255),
+    montoFinal float(20,2)
+);
+ALTER TABLE VENTA
+ADD FOREIGN KEY (idCliente) REFERENCES cliente(idCliente)
+;
+DROP TABLE IF EXISTS VENTA_DETALLE;
+CREATE TABLE VENTA_DETALLE (
+    idLote int NOT NULL,
+    idVenta int NOT NULL,
+    idProducto int NOT NULL,
+    idDetalle int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    cantidad int NOT NULL,
+    precio float(20,2) NOT NULL   
+);
+ALTER TABLE VENTA_DETALLE
+ADD FOREIGN KEY (idVenta) REFERENCES venta(idVenta),
+ADD FOREIGN KEY (idLote) REFERENCES lote(idLote),
+ADD FOREIGN KEY (idProducto) REFERENCES producto(idProducto)
+;
+DROP TABLE IF EXISTS COMPRA_INSUMOS;
+CREATE TABLE COMPRA_INSUMOS (
+    idInsumos int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    idLote int NOT NULL,
+    proveedor varchar(255) NOT NULL,
+    detalle varchar (255) NOT NULL,
+    montoFinal float(20,2) NOT NULL
+);
+ALTER TABLE compra_insumos
+ADD FOREIGN KEY (idLote) REFERENCES lote(idLote)
+;
+DROP TABLE IF EXISTS LOTE_DETALLE;
+CREATE TABLE LOTE_DETALLE (
+    idProducto int NOT NULL,
+    idLoteDetalle int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    operario varchar (255) NOT NULL,
+    tiempoEspera varchar (255) NOT NULL,
+    cantidad int NOT NULL,
+    costo float(20,2) NOT NULL,
+    cantMoldes int NOT NULL
+   
+   
+);
+ALTER TABLE LOTE_DETALLE
+ADD FOREIGN KEY (idProducto) REFERENCES producto(idProducto)
+;
